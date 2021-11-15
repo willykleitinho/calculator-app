@@ -2,54 +2,8 @@ var themeNow = 1;
 const themeIndicator = document.getElementById("theme-indicator");
 const cssProps = document.querySelector(":root");
 const resultScreen = document.getElementById("result-screen");
-var calc = {
-  current: 0,
-  operation: undefined,
-  operand1: undefined,
-  operand2: 0,
-}
 
-// TODO
-function addOperation(operation) {
-  switch(operation) {
-    case "x":
-    case "/":
-    case "+":
-    case "-":
-  }
-}
-
-// TODO 
-function addNumber(n) {
-  calc.operand2 = calc.operand2 * 10 + n;
-  resultScreen.innerText = calc.operand2;
-}
-
-
-// TODO
-function updateResult() {
-  if (typeof calc.operand1 == "number" && typeof calc.operand2 == "number" && calc.operation) {
-    let result;
-    switch(calc.operation) {
-      case "+":
-        result = calc.operand1 + calc.operand2;
-        break;
-      case "-":
-        result = calc.operand1 - calc.operand2;
-        break;
-      case "/":
-        result = calc.operand1 / calc.operand2;
-        break;
-      case "x":
-        result = calc.operand1 * calc.operand2;
-        break;
-    }
-    calc.current = result.toString();
-    calc.operand1 = result;
-    calc.operation = undefined;
-    calc.operand2 = undefined;
-  } else if (typeof calc.operand1 == "number" && typeof calc.operand2 == "undefined" && typeof calc.operation == "undefined") {}
-}
+const log = str => console.log(str);
 
 // Application themes
 const themes = {
@@ -69,7 +23,7 @@ const themes = {
     clrKeyStrongShadow: "hsl(6, 70%, 34%)",
     clrKeyStrongFont: "#fff",
 
-    indicator: "0%"
+    indicator: "0%",
   },
   theme2: {
     clrBgMain: "hsl(0, 0%, 90%)",
@@ -87,7 +41,7 @@ const themes = {
     clrKeyStrongShadow: "hsl(25, 99%, 27%)",
     clrKeyStrongFont: "#fff",
 
-    indicator: "36%"
+    indicator: "36%",
   },
   theme3: {
     clrBgMain: "hsl(268, 75%, 9%)",
@@ -105,42 +59,95 @@ const themes = {
     clrKeyStrongShadow: "hsl(177, 92%, 70%)",
     clrKeyStrongFont: "hsl(198, 20%, 13%)",
 
-    indicator: "77%"
-  }
+    indicator: "77%",
+  },
 };
 
+document.getElementById("change-theme").addEventListener("click", () => {
+  if (themeNow == 3) {
+    themeNow = 1;
+  } else {
+    themeNow++;
+  }
 
-document.getElementById("change-theme").addEventListener('click', () => {
-  if (themeNow == 3) { themeNow = 1; }
-  else { themeNow++; }
-  
+  const setProperty = (property, value) =>
+    cssProps.style.setProperty(property, value);
+
   const theme = "theme" + themeNow;
-  cssProps.style.setProperty("--clr-bg-main", themes[theme].clrBgMain);
-  cssProps.style.setProperty("--clr-bg-toggle", themes[theme].clrBgToggle);
-  cssProps.style.setProperty("--clr-bg-screen", themes[theme].clrBgScreen);
-  cssProps.style.setProperty("--font-button-color", themes[theme].clrFontButton);
-  cssProps.style.setProperty("--font-result-color", themes[theme].clrFontResult);
-  cssProps.style.setProperty("--clr-key", themes[theme].clrKey);
-  cssProps.style.setProperty("--clr-key-shadow", themes[theme].clrKeyShadow);
-  cssProps.style.setProperty("--clr-key-secondary", themes[theme].clrKeySecondary);
-  cssProps.style.setProperty("--clr-key-secondary-shadow", themes[theme].clrKeySecondaryShadow);
-  cssProps.style.setProperty("--clr-key-strong", themes[theme].clrKeyStrong);
-  cssProps.style.setProperty("--clr-key-strong-shadow", themes[theme].clrKeyStrongShadow);
-  cssProps.style.setProperty("--clr-key-strong-font", themes[theme].clrKeyStrongFont);
+  setProperty("--clr-bg-main", themes[theme].clrBgMain);
+  setProperty("--clr-bg-toggle", themes[theme].clrBgToggle);
+  setProperty("--clr-bg-screen", themes[theme].clrBgScreen);
+  setProperty("--font-button-color", themes[theme].clrFontButton);
+  setProperty("--font-result-color", themes[theme].clrFontResult);
+  setProperty("--clr-key", themes[theme].clrKey);
+  setProperty("--clr-key-shadow", themes[theme].clrKeyShadow);
+  setProperty("--clr-key-secondary", themes[theme].clrKeySecondary);
+  setProperty(
+    "--clr-key-secondary-shadow",
+    themes[theme].clrKeySecondaryShadow
+  );
+  setProperty("--clr-key-strong", themes[theme].clrKeyStrong);
+  setProperty("--clr-key-strong-shadow", themes[theme].clrKeyStrongShadow);
+  setProperty("--clr-key-strong-font", themes[theme].clrKeyStrongFont);
 
-  console.log(themeIndicator);
-  console.log(themes[theme].indicator);
   themeIndicator.style.left = themes[theme].indicator;
 });
 
-// TEST FUCTION
-function test(event) {
-  console.log(event.srcElement.innerText);
-}
-const buttons = document.getElementsByClassName("item");
+var newField = true;
+var tempStr = '';
+var hasNumber = false;
 
-for (let button of buttons) {
-  button.addEventListener("click", test, true);
-}
+document.getElementById("buttons").addEventListener("click", (ev) => {
+  if (ev.target.tagName != "BUTTON") {
+    return;
+  }
+  let tmp = '';
+  switch (ev.target.value) {
+    case "+":
+    case "*":
+    case "/":
+      if (!hasNumber && newField) {
+        log('initial state')
+        break;
+      }
+    
+      tmp += `(${resultScreen.innerText}) ${ev.target.value} `;
+      hasNumber = false;
+      newField = true;
+      break;
+    case "-":
+      if (!tempStr && newField) {
+        resultScreen.innerText = ev.target.value;
+        newField = false;
+        hasNumber = true;
+        break;
+      }
 
-// END
+      if (!hasNumber && !newField) {
+        break;
+      }
+
+      tmp += `(${resultScreen.innerText}) ${ev.target.value} `;
+      newField = true;
+      break;
+    case "=":
+    case "del":
+      // do something;
+      break;
+    case "reset":
+      // do something;
+      break;
+    default:
+  }
+  tempStr += tmp;
+  log(tempStr);
+
+  if (newField) {
+    if (!tempStr) {
+    }
+    resultScreen.innerText = "";
+    newField = false;
+  }
+
+  resultScreen.innerText += ev.target.value;
+});
