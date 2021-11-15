@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- displays site properly based on user's device -->
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Spartan:wght@700&display=swap" rel="stylesheet"> 
+
+  <link rel="icon" type="image/png" sizes="32x32" href="./images/favicon-32x32.png">
+  <link rel="stylesheet" href="assets/style.css">
+  <script src="assets/script.js" defer></script>
+
+  <title>Frontend Mentor | Calculator app</title>
+
+  <!-- Feel free to remove these styles or customise in your own stylesheet 👍 -->
+  <style>
+    .attribution { font-size: 11px; text-align: center; }
+    .attribution a { color: hsl(228, 45%, 44%); }
+  </style>
+</head>
+<body>
+
+  <div class="outer-container">
+    <div class="head">
+      <h1>calc</h1>
+      <div class="theme">
+        <span class="theme_one">1</span>
+        <span class="theme_two">2</span>
+        <span class="theme_three">3</span>
+        <div class="theme_box" id="change-theme">
+          <div class="theme_indicator" id="theme-indicator"></div>
+        </div>
+      </div>
+    </div>
+    <div id="result-screen" class="result">0</div>
+    <div class="calculator">
+      <div onclick="addNumber(1)" class="item n-1">1</div>
+      <div onclick="addNumber(2)" class="item n-2">2</div>
+      <div onclick="addNumber(3)" class="item n-3">3</div>
+      <div onclick="addNumber(4)" class="item n-4">4</div>
+      <div onclick="addNumber(5)" class="item n-5">5</div>
+      <div onclick="addNumber(6)" class="item n-6">6</div>
+      <div onclick="addNumber(7)" class="item n-7">7</div>
+      <div onclick="addNumber(8)" class="item n-8">8</div>
+      <div onclick="addNumber(9)" class="item n-9">9</div>
+      <div onclick="addNumber(0)" class="item n-0">0</div>
+      <div class="item b-float">.</div>
+      <div class="item secondary b-del">del</div>
+      <div onclick="addOperation('+')" class="item b-plus">+</div>
+      <div onclick="addOperation('-')" class="item b-minus">-</div>
+      <div onclick="addOperation('x')" class="item b-times">x</div>
+      <div onclick="addOperation('/')" class="item b-division">/</div>
+      <div class="item secondary b-reset">reset</div>
+      <div class="item b-equals">=</div>
+    </div>
+  </div>
+
+  <div class="attribution">
+    Challenge by <a href="https://www.frontendmentor.io?ref=challenge" target="_blank">Frontend Mentor</a>. 
+    Coded by <a href="#">Your Name Here</a>.
+  </div>
+</body>
+</html>
